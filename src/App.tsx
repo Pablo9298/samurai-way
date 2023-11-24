@@ -1,17 +1,35 @@
-import React from 'react';
+import React, {FC} from 'react';
 import './App.css';
-import {Header} from './layout/header/Header';
-import {Navbar} from './layout/navbar/Navbar';
-import {Profile} from './layout/profile/Profile';
-import styled from "styled-components";
+import {Header} from './components/header/Header';
+import {Navbar} from './components/navbar/Navbar';
+import {Profile} from './components/profile/Profile';
+import {Message} from './components/dialogs/message/Message';
+import {News} from './components/news/News';
+import {Music} from './components/music/Music';
+import {Settings} from './components/settings/Settings';
+import styled from 'styled-components';
+import {BrowserRouter, Route} from 'react-router-dom';
+import {Dialogs} from './components/dialogs/Dialogs';
+import {RootStateType} from './redux/state';
 
-const App = () => {
+
+const App: FC<RootStateType> = (props ) => {
+
     return (
-        <AppStyled>
-            <Header/>
-            <Navbar/>
-            <Profile/>
-        </AppStyled>
+        <BrowserRouter>
+            <AppStyled>
+                <Header/>
+                <Navbar/>
+                {/*<Route path='/dialogs' component={Dialogs}/>*/}
+                {/*<Route path='/profile' component={Profile}/>*/}
+                <Route path='/news' component={News}/>
+                <Route path='/music' component={Music}/>
+                <Route path='/settings' component={Settings}/>
+
+                <Route path="/dialogs" render={() => <Dialogs dialogs={props.dialogPage.dialogs} messages={props.dialogPage.messages} />}/>
+                <Route path="/profile" render={() => <Profile posts={props.profilePage.posts} />}/>
+            </AppStyled>
+        </BrowserRouter>
     );
 }
 
