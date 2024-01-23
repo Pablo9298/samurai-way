@@ -3,13 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import {GlobalStyle} from './styles/Global.styled';
-import {state} from './redux/state';
-
+import {BrowserRouter} from 'react-router-dom';
+import {Provider} from 'react-redux';
+import {store} from './redux/redux-store';
 
 ReactDOM.render(
-    <React.StrictMode>
+    <BrowserRouter>
         <GlobalStyle/>
-        <App dialogPage={state.dialogPage} profilePage={state.profilePage}/>
-    </React.StrictMode>,
+        <Provider store={store}>
+            <App/>
+        </Provider>
+
+    </BrowserRouter>,
     document.getElementById('root')
 );
+

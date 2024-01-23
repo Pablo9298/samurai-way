@@ -1,16 +1,14 @@
 import React from 'react';
-import {MyPosts} from './mypost/MyPosts';
 import {ProfileInfo} from './profileInfo/ProfileInfo';
 import {StyledSections} from '../../styles/StyledSections';
-import {ProfilePageType} from '../../redux/state';
+import {MyPostsContainer} from './mypost/MyPostsContainer';
 
-export const Profile = (props: ProfilePageType) => {
+export const Profile = () => {
+
     return (
         <StyledSections>
             <ProfileInfo/>
-            <MyPosts posts={props.posts}/>
+            <MyPostsContainer />
         </StyledSections>
     );
-}
-
-
+};

@@ -1,20 +1,17 @@
 import React from 'react';
-import {MessageType} from '../../../redux/state';
+import {MessageType} from '../../../redux/store';
 import styled from 'styled-components';
 
 export const Message = (props: MessageType) => {
+
     return (
-        <Test className="message">{props.message}</Test>
+        <StyledMessages className="message">{props.message}</StyledMessages>
     )
 }
 
-const Test = styled.p`
+const StyledMessages = styled.p`
   display: flex;
   flex-direction: column;
-  
-  &:nth-child(odd) {
-    align-items: end;
-  }
-  
+  align-items: end;
 `
 

@@ -1,35 +1,32 @@
-import React, {FC} from 'react';
+import React from 'react';
 import './App.css';
 import {Header} from './components/header/Header';
 import {Navbar} from './components/navbar/Navbar';
 import {Profile} from './components/profile/Profile';
-import {Message} from './components/dialogs/message/Message';
 import {News} from './components/news/News';
 import {Music} from './components/music/Music';
 import {Settings} from './components/settings/Settings';
 import styled from 'styled-components';
-import {BrowserRouter, Route} from 'react-router-dom';
-import {Dialogs} from './components/dialogs/Dialogs';
-import {RootStateType} from './redux/state';
+import {Route} from 'react-router-dom';
+import {DialogsContainer} from './components/dialogs/DialogsContainer';
+import {UsersContainer} from './components/users/UsersContainer';
 
-
-const App: FC<RootStateType> = (props ) => {
-
+const App = () => {
     return (
-        <BrowserRouter>
-            <AppStyled>
-                <Header/>
-                <Navbar/>
-                {/*<Route path='/dialogs' component={Dialogs}/>*/}
-                {/*<Route path='/profile' component={Profile}/>*/}
-                <Route path='/news' component={News}/>
-                <Route path='/music' component={Music}/>
-                <Route path='/settings' component={Settings}/>
+        <AppStyled>
+            <Header/>
+            <Navbar/>
+            <Route path="/news" component={News}/>
+            <Route path="/music" component={Music}/>
+            <Route path="/settings" component={Settings}/>
 
-                <Route path="/dialogs" render={() => <Dialogs dialogs={props.dialogPage.dialogs} messages={props.dialogPage.messages} />}/>
-                <Route path="/profile" render={() => <Profile posts={props.profilePage.posts} />}/>
-            </AppStyled>
-        </BrowserRouter>
+            <Route path="/dialogs" render={() => <DialogsContainer />}/>
+
+
+            <Route path="/profile" render={() => <Profile />}/>
+
+            <Route path="/users" render={() => <UsersContainer />}/>
+        </AppStyled>
     );
 }
 

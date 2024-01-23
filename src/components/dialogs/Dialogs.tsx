@@ -1,20 +1,28 @@
-import React from 'react';
+import React, {ChangeEvent, FC} from 'react';
 import {StyledSections} from '../../styles/StyledSections';
 import styled from 'styled-components';
 import {DialogItem} from './dialogItem/DialogItem';
 import {Message} from './message/Message';
-import {DialogPageType} from '../../redux/state';
+import {DialogPropsType} from './DialogsContainer';
 
-export const Dialogs = (props: DialogPageType) => {
+export const Dialogs: FC<DialogPropsType> = (props) => {
 
-        let dialogsElements = props.dialogs
+        let dialogsElements = props.dialogPage.dialogs
             .map((d) =>
-                <DialogItem name={d.name} id={d.id} isActive={false}/>);
+                <DialogItem key={d.id} name={d.name} id={d.id} isActive={false}/>);
 
 
-        let messagesElements = props.messages
+        let messagesElements = props.dialogPage.messages
             .map(m =>
-                <Message message={m.message} id={m.id}/>)
+                <Message key={m.id} message={m.message} id={m.id}/>)
+
+        const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+            let message = e.currentTarget.value
+            props.addDialogPostMessage(message)
+        }
+        const dialogSendMessageHandler = () => {
+            props.addDialogPost()
+        }
 
         return (
             <StyledSections>
@@ -27,6 +35,8 @@ export const Dialogs = (props: DialogPageType) => {
 
                     <StyledMessages className="messages">
                         {messagesElements}
+                        <textarea value={props.dialogPage.newDialogText} onChange={onChangeHandler}></textarea>
+                        <button onClick={dialogSendMessageHandler}>Send Message</button>
                     </StyledMessages>
                 </StyledDialogs>
             </StyledSections>

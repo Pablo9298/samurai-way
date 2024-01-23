@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
-import {DialogType} from '../../../redux/state';
+import {DialogType} from '../../../redux/store';
 import {ItemImgStyled} from '../../profile/mypost/post/Post';
 
 export const DialogItem = (props: DialogType) => {

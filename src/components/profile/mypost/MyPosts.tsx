@@ -1,20 +1,29 @@
-import React from 'react';
-import {Post} from './post/Post';
+import React, {ChangeEvent, FC} from 'react';
 import styled from 'styled-components';
-import {ProfilePageType} from '../../../redux/state';
+import {Post} from './post/Post';
+import {ProfilePropsType} from './MyPostsContainer';
 
 
-export const MyPosts = (props: ProfilePageType) => {
+export const MyPosts: FC<ProfilePropsType> = (props) => {
 
-    let postElements = props.posts.map(p => <Post message={p.message} likesCounts={p.likesCounts}/>)
+    let postElements = props.profilePage.posts
+        .map((p) => <Post key={p.id} message={p.message} likesCounts={p.likesCounts}/>);
+    const addPostHandler = () => {
+        props.addPost();
+    };
+
+    const onPostChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        let text = e.currentTarget.value;
+        props.updateNePostText(text)
+    };
 
     return (
         <>
             <MyPostsAddPostWrapper>
-               <h3>my posts</h3>
+                <h3>my posts</h3>
 
-                <textarea></textarea>
-                <button style={{display: 'block', marginBottom: '20px'}}>Add post</button>
+                <textarea value={props.profilePage.newPostText} onChange={onPostChange}/>
+                <button onClick={addPostHandler}>Add post</button>
 
                 {postElements}
             </MyPostsAddPostWrapper>
@@ -24,7 +33,9 @@ export const MyPosts = (props: ProfilePageType) => {
 
 const MyPostsAddPostWrapper = styled.div`
   padding: 20px;
+
+  & button {
+    display: block;
+    margin: 10px 0 20px 0;
+  }
 `
-
-
-
