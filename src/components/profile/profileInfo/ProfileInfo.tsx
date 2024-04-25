@@ -1,7 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
+import Preloader from '../../common/preloader/Preloader';
+import {ProfileInfoType} from '../../../redux/profileReducer';
+import ProfileStatusWithHooks from './ProfileStatusWithHooks';
 
-export const ProfileInfo = () => {
+type ProfileType = {
+    profile: ProfileInfoType
+    status: string
+    updateStatus: (status: string) => void
+}
+export const ProfileInfo: React.FC<ProfileType> = ({profile, status, updateStatus}) => {
+    if (!profile) {
+        return <Preloader/>
+    }
     return (
         <div>
             <div>
@@ -10,7 +21,22 @@ export const ProfileInfo = () => {
             </div>
 
             <DescriptionBlock>
-                avatar + descr
+                <img src={profile.photos.large} alt={'avatar of profile'} style={{maxWidth: '400px'}}/>
+                <div>
+                    <div>{profile.aboutMe}</div>
+                    <div>{profile.contacts.facebook}</div>
+                    <div>{profile.contacts.github}</div>
+                    <div>{profile.contacts.vk}</div>
+                    <div>{profile.contacts.twitter}</div>
+                    <div>{profile.contacts.instagram}</div>
+                    <div>{profile.contacts.mainLink}</div>
+                    <div>{profile.contacts.website}</div>
+                    <div>{profile.contacts.youtube}</div>
+                    <div>{profile.lookingForAJob}</div>
+                    <div>{profile.lookingForAJobDescription}</div>
+                    <div>{profile.fullName}</div>
+                </div>
+                <ProfileStatusWithHooks status={status} updateStatus={updateStatus}/>
             </DescriptionBlock>
         </div>
     );
@@ -23,6 +49,6 @@ const ImageStyled = styled.img`
 `
 
 const DescriptionBlock = styled.div`
-    padding: 20px;
+  padding: 20px;
 `
 

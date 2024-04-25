@@ -15,6 +15,10 @@ export const Navbar = () => {
                 </ItemStyled>
 
                 <ItemStyled>
+                    <NavLink to="/users">Users</NavLink>
+                </ItemStyled>
+
+                <ItemStyled>
                     <NavLink to="/news">News</NavLink>
                 </ItemStyled>
 

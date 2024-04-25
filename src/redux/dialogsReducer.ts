@@ -1,13 +1,9 @@
 export type AddDialogPostActionCreator = ReturnType<typeof addDialogPostActionCreator>
-export type AddDialogPostTextActionCreator = ReturnType<typeof addDialogPostTextActionCreator>
-
-export type DialogsActionType =
-    AddDialogPostActionCreator
-    | AddDialogPostTextActionCreator
 
 export type DialogType = {
     id: number;
     name: string;
+    isActive?: boolean
 };
 
 export type MessageType = {
@@ -31,28 +27,20 @@ const initialState = {
         {id: 3, message: 'is all okay ?'},
         {id: 4, message: 'Yes ofcrs'},
     ] as Array<MessageType>,
-    newDialogText: '',
 }
 
 export type DialogsPageType = typeof initialState
 
-const dialogsReducer = (state: DialogsPageType = initialState, action: DialogsActionType): DialogsPageType => {
+const dialogsReducer = (state: DialogsPageType = initialState, action: AddDialogPostActionCreator): DialogsPageType => {
     switch (action.type) {
         case 'ADD-DIALOG-POST': {
             let dialogText: MessageType = {
                 id: new Date().getTime(),
-                message: state.newDialogText
+                message: action.newDialogText
             };
             return {
                 ...state,
                 messages: [...state.messages, dialogText],
-                newDialogText: ''
-            }
-        }
-        case 'ADD-DIALOG-POST-TEXT': {
-            return {
-                ...state,
-                newDialogText: action.newDialogText
             }
         }
         default:
@@ -60,15 +48,10 @@ const dialogsReducer = (state: DialogsPageType = initialState, action: DialogsAc
     }
 }
 
-export const addDialogPostTextActionCreator = (message: string) => {
+export const addDialogPostActionCreator = (newDialogText: string) => {
     return {
-        type: 'ADD-DIALOG-POST-TEXT',
-        newDialogText: message
-    } as const
-}
-export const addDialogPostActionCreator = () => {
-    return {
-        type: 'ADD-DIALOG-POST'
+        type: 'ADD-DIALOG-POST',
+        newDialogText
     } as const
 }
 

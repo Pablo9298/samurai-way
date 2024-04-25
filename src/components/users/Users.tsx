@@ -1,62 +1,48 @@
-import {UsersPropsType} from './UsersContainer';
+import React, {FC} from 'react';
+import {UserType} from '../../redux/usersReducer';
+import { Paginator } from '../common/paginator/Paginator';
+import User from './User';
 
-export const Users = (props: UsersPropsType) => {
+type UsersType = {
+    pageSize: number
+    totalUsersCount: number
+    currentPage: number
+    onPageChanged: (pageNumber: number) => void
+    users: UserType[]
+    follow: (userId: number) => void
+    unfollow: (userId: number) => void
+    followingInProgress: number[]
+}
 
-    if(props.usersPage.users.length === 0) {
-        props.setUsers([
-            {
-                id: 1,
-                photoUrl: 'https://chess-center.ru/wp-content/uploads/2022/09/2_4yls8wlami9frintdrgsya.jpeg',
-                followed: false,
-                fullName: 'Pablo',
-                status: 'I am a Boss',
-                location: {city: 'Tallinn', country: 'Estonia'}
-            },
-            {
-                id: 2,
-                photoUrl: 'https://chess-center.ru/wp-content/uploads/2022/09/2_4yls8wlami9frintdrgsya.jpeg',
-                followed: true,
-                fullName: 'Toivo',
-                status: 'I am a Boss',
-                location: {city: 'Moscow', country: 'Russia'}
-            },
-            {
-                id: 3,
-                photoUrl: 'https://chess-center.ru/wp-content/uploads/2022/09/2_4yls8wlami9frintdrgsya.jpeg',
-                followed: false,
-                fullName: 'Marcus',
-                status: 'I am a Boss',
-                location: {city: 'Kiev', country: 'Ukraine'}
-            }
-        ])
-    }
+const Users: FC<UsersType> = (
+    {
+        users,
+        totalUsersCount ,
+        pageSize,
+        currentPage,
+        onPageChanged,
+        unfollow,
+        follow,
+        followingInProgress,
+    }) => {
 
     return (
         <div>
+            <Paginator currentPage={currentPage}
+                       onPageChanged={onPageChanged}
+                       totalItemsCount={totalUsersCount }
+                       pageSize={pageSize}
+            />
             {
-                props.usersPage.users.map(u => <div key={u.id}>
-                    <span>
-                        <div><img style={{width: '50px', height: '50px'}} src={u.photoUrl} alt="dawdwad"/></div>
-                        <div>{u.followed
-                            ? <button onClick={() => {
-                                props.unfollow(u.id)
-                            }}>Unfollow</button>
-                            : <button onClick={() => {
-                                props.follow(u.id)
-                            }}>Follow</button>}</div>
-                    </span>
-                    <span>
-                        <span>
-                            <div>{u.fullName}</div>
-                            <div>{u.status}</div>
-                        </span>
-                        <span>
-                            <div>{u.location.country}</div>
-                            <div>{u.location.city}</div>
-                        </span>
-                    </span>
-                </div>)
+                users.map(u => <User key={u.id}
+                                     user={u}
+                                     follow={follow}
+                                     unfollow={unfollow}
+                                     followingInProgress={followingInProgress}
+                />)
             }
         </div>
     );
 };
+
+export default Users;

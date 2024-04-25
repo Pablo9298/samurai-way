@@ -1,22 +1,22 @@
 import React from 'react';
-import styled from "styled-components";
+import s from './Header.module.css'
+import {NavLink} from 'react-router-dom';
+import {HeaderContainerPropsType} from './HeaderContainer';
 
-export const Header = () => {
+export const Header: React.FC<HeaderContainerPropsType> = (props) => {
     return (
-        <HeaderStyled>
-            <ImgStyled src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg"
-                       alt="Logo"/>
-        </HeaderStyled>
+        <header className={s.header}>
+            <img className={s.headerImg}
+                 src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg"
+                 alt="Logo"/>
+
+            <div className={s.loginBlock}>
+                {props.isAuth
+                    ?<div> {props.login} - <button onClick={props.logout}>Log Out</button></div>
+                    : <NavLink to={'/login'}>Login</NavLink>
+                }
+            </div>
+        </header>
     );
 };
-
-
-const HeaderStyled = styled.header`
-  grid-area: h;
-  border: 1px solid red;
-  background-color: #c8dced;
-`
-const ImgStyled = styled.img`
-  width: 40px;
-`
 

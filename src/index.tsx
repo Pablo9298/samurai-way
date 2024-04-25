@@ -1,20 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import {GlobalStyle} from './styles/Global.styled';
-import {BrowserRouter} from 'react-router-dom';
-import {Provider} from 'react-redux';
-import {store} from './redux/redux-store';
+import {SamuraiJSApp} from './App';
 
 ReactDOM.render(
-    <BrowserRouter>
-        <GlobalStyle/>
-        <Provider store={store}>
-            <App/>
-        </Provider>
-
-    </BrowserRouter>,
+    <SamuraiJSApp/>,
     document.getElementById('root')
 );
 

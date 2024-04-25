@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
-import {DialogType} from '../../../redux/store';
 import {ItemImgStyled} from '../../profile/mypost/post/Post';
+import {DialogType} from '../../../redux/dialogsReducer';
 
 export const DialogItem = (props: DialogType) => {
     const activeClassName = props.isActive ? 'active' : '';

@@ -1,36 +1,89 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import './App.css';
-import {Header} from './components/header/Header';
 import {Navbar} from './components/navbar/Navbar';
-import {Profile} from './components/profile/Profile';
 import {News} from './components/news/News';
 import {Music} from './components/music/Music';
 import {Settings} from './components/settings/Settings';
 import styled from 'styled-components';
-import {Route} from 'react-router-dom';
-import {DialogsContainer} from './components/dialogs/DialogsContainer';
-import {UsersContainer} from './components/users/UsersContainer';
+import {BrowserRouter, Route, withRouter} from 'react-router-dom';
+import UsersContainer from './components/users/UsersContainer';
+import HeaderContainer from './components/header/HeaderContainer';
+import Login from './components/login/Login';
+import {connect, Provider} from 'react-redux';
+import {compose} from 'redux';
+import {initializeApp} from './redux/appReducer';
+import {AppStateType, store} from './redux/redux-store';
+import Preloader from './components/common/preloader/Preloader';
+import {GlobalStyle} from './styles/Global.styled';
+import {WithSuspense} from './hoc/WithSuspense';
+import DialogsContainer from './components/dialogs/DialogsContainer';
+import ProfileContainer from './components/profile/ProfileContainer';
 
-const App = () => {
-    return (
-        <AppStyled>
-            <Header/>
-            <Navbar/>
-            <Route path="/news" component={News}/>
-            <Route path="/music" component={Music}/>
-            <Route path="/settings" component={Settings}/>
-
-            <Route path="/dialogs" render={() => <DialogsContainer />}/>
 
 
-            <Route path="/profile" render={() => <Profile />}/>
 
-            <Route path="/users" render={() => <UsersContainer />}/>
-        </AppStyled>
-    );
+type MapDispatchToPropsType = {
+    initializeApp: () => void;
+};
+
+type MapStateToPropsType = {
+    initialized: boolean
 }
 
-export default App;
+type AppMapStateAndDispatchType = MapDispatchToPropsType & MapStateToPropsType
+
+const DialogsWithSuspense = WithSuspense(DialogsContainer);
+const ProfileWithSuspense = WithSuspense(ProfileContainer);
+
+class App extends React.Component <AppMapStateAndDispatchType> {
+
+    componentDidMount() {
+        this.props.initializeApp();
+    }
+
+    render() {
+        if (!this.props.initialized) {
+            return <Preloader/>
+        }
+        return (
+            <AppStyled>
+                <HeaderContainer/>
+                <Navbar/>
+                <Route path="/news" component={News}/>
+                <Route path="/music" component={Music}/>
+                <Route path="/settings" component={Settings}/>
+
+                <Route path="/dialogs" component={DialogsWithSuspense} />
+                <Route path="/profile/:userId?" component={ProfileWithSuspense} />
+
+                <Route path="/users" render={() => <UsersContainer/>}/>
+
+                <Route path="/login" render={() => <Login/>}/>
+            </AppStyled>
+        );
+    }
+}
+
+const mapStateToProps = (state: AppStateType) => ({
+    initialized: state.app.initialized
+})
+
+let AppContainer = compose<React.ComponentType>(
+    withRouter,
+    connect(mapStateToProps, {initializeApp}))(App);
+
+export const SamuraiJSApp = (props: any) => {
+    return (
+        < BrowserRouter>
+            <GlobalStyle/>
+            <Provider store={store}>
+                <AppContainer/>
+            </Provider>
+        </BrowserRouter>
+    )
+
+}
+
 
 const AppStyled = styled.div`
   display: grid;
